@@ -1,0 +1,423 @@
+openapi: 3.0.3
+info:
+  title: Gestion d'annonces immobilières
+  description: |-
+    Web APIs / Web Services
+
+    TP2
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: "1"
+servers:
+- url: /
+paths:
+  /annonces:
+    get:
+      tags:
+      - Annonces
+      summary: Obtient les annonces
+      description: Retourne toutes les annonces immobilières
+      operationId: getAnnonces
+      responses:
+        "200":
+          description: Retourne toutes les annonces immobilières
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Annonce'
+                x-content-type: application/json
+      security:
+      - authenticate:
+        - read_user
+      - jwt: []
+      x-swagger-router-controller: Annonces
+    post:
+      tags:
+      - Annonces
+      summary: Ajoute une annonce
+      description: Crée une nouvelle annonce
+      operationId: postAnnonces
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AnnonceUpdate'
+            encoding:
+              photos:
+                contentType: image/png, image/jpeg
+      responses:
+        "200":
+          description: Crée une nouvelle annonce
+        "401":
+          description: Non connecté
+        "403":
+          description: Requiert la permission "agent"
+      security:
+      - authenticate:
+        - read_user
+      - jwt: []
+      x-swagger-router-controller: Annonces
+  /annonces/{annonceId}:
+    get:
+      tags:
+      - Annonces
+      summary: Obtient une annonce
+      description: Retourne l'annonce correspondant à l'id
+      operationId: getAnnonce
+      parameters:
+      - name: annonceId
+        in: path
+        description: Id de l'annonce à obtenir
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/ObjectId'
+      responses:
+        "200":
+          description: Retourne l'annonce correspondant à l'id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Annonce'
+      security:
+      - authenticate:
+        - read_user
+      - jwt: []
+      x-swagger-router-controller: Annonces
+    put:
+      tags:
+      - Annonces
+      summary: Met à jour une annonce
+      description: Met à jour l'annonce correspondant à l'id
+      operationId: putAnnonce
+      parameters:
+      - name: annonceId
+        in: path
+        description: Id de l'annonce à mettre à jour
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/ObjectId'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AnnonceUpdate'
+      responses:
+        "200":
+          description: Retourne l'annonce mise à jour
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnonceUpdate'
+        "401":
+          description: Non connecté
+        "403":
+          description: Requiert la permission "agent"
+      security:
+      - authenticate:
+        - read_user
+      - jwt: []
+      x-swagger-router-controller: Annonces
+    delete:
+      tags:
+      - Annonces
+      summary: Supprime l'annonce
+      description: Supprime l'annonce correspondant à l'id
+      operationId: deleteAnnonce
+      parameters:
+      - name: annonceId
+        in: path
+        description: Id de l'annonce à supprimer
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/ObjectId'
+      responses:
+        "200":
+          description: Supprime l'annonce correspondant à l'id
+        "401":
+          description: Non connecté
+        "403":
+          description: Requiert la permission "agent"
+      security:
+      - authenticate:
+        - read_user
+      - jwt: []
+      x-swagger-router-controller: Annonces
+  /annonces/{annonceId}/images/{n}:
+    get:
+      tags:
+      - Annonces
+      summary: Obtient l'image d'une annonce
+      description: Retourne une image d'une annonce si elle existe
+      operationId: getImage
+      parameters:
+      - name: annonceId
+        in: path
+        description: Id de l'annonce
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/ObjectId'
+      - name: "n"
+        in: path
+        description: Numéro de l'image à obtenir
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 1
+      responses:
+        "200":
+          description: Retourne l'image
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+                x-content-type: image/*
+        "404":
+          description: not found
+      x-swagger-router-controller: Annonces
+  /annonces/{annonceId}/question:
+    post:
+      tags:
+      - Questions
+      summary: Ajoute une question
+      description: Pose une question pour une annonce
+      operationId: postQuestion
+      parameters:
+      - name: annonceId
+        in: path
+        description: Id de l'annonce
+        required: true
+        schema:
+          $ref: '#/components/schemas/ObjectId'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Question'
+      responses:
+        "200":
+          description: Retourne la question
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        "401":
+          description: Non connecté
+        "403":
+          description: Requiert la permission "user"
+      security:
+      - authenticate:
+        - read_user
+      - jwt: []
+      x-swagger-router-controller: Questions
+  /annonces/{annonceId}/question/{n}:
+    post:
+      tags:
+      - Reponses
+      summary: Ajoute une réponse
+      description: Répond à une question pour une annonce
+      operationId: postReponse
+      parameters:
+      - name: annonceId
+        in: path
+        description: Id de l'annonce
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/ObjectId'
+      - name: "n"
+        in: path
+        description: Numéro (indice) de la question
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 0
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Reponse'
+      responses:
+        "200":
+          description: Retourne la question avec la réponse correspondante
+        "401":
+          description: Non connecté
+        "403":
+          description: Requiert la permission "agent"
+      security:
+      - authenticate:
+        - read_user
+      - jwt: []
+      x-swagger-router-controller: Reponses
+  /graphql:
+    post:
+      summary: "GraphQL"
+      tags:
+      - GraphQL
+      responses:
+        "200":
+          description: Retourne les ressources demandées
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GraphQLResult"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GraphQLQuery"
+            examples:
+              Annonces:
+                value:
+                  query: "{ annonces { _id, title } }"
+      security:
+      - authenticate:
+        - read_user
+      - jwt: []
+components:
+  schemas:
+    ObjectId:
+      type: string
+      description: Identifiant unique généré automatiquement
+      example: 634af786cf8ece2badeaf7c0
+    Annonce:
+      allOf:
+      - $ref: '#/components/schemas/AnnonceUpdate'
+      - type: object
+        properties:
+          _id:
+            $ref: '#/components/schemas/ObjectId'
+          questions:
+            type: array
+            items:
+              allOf:
+                - $ref: '#/components/schemas/Question'
+                - type: object
+                  properties:
+                    answer:
+                      $ref: '#/components/schemas/Reponse'
+    AnnonceUpdate:
+      required:
+      - date
+      - description
+      - price
+      - publication_status
+      - status
+      - title
+      - type
+      type: object
+      properties:
+        title:
+          type: string
+          example: Maison à vendre
+        publication_status:
+          type: string
+          enum:
+          - publiée
+          - non publiée
+        type:
+          type: string
+          enum:
+          - vente
+          - location
+        status:
+          type: string
+          enum:
+          - disponible
+          - loué
+          - vendu
+        description:
+          type: string
+          example: Description
+        price:
+          minimum: 0
+          type: integer
+          example: 100000
+        date:
+          type: string
+          format: date
+          example: "2022-11-22"
+        photos:
+          type: array
+          items:
+            type: string
+            format: binary
+            example: !!binary ""
+      example:
+        date: 2000-01-23
+        price: 100000
+        description: Description
+        title: Maison à vendre
+        type: vente
+        photos:
+        - !!binary ""
+        - !!binary ""
+        publication_status: publiée
+        status: disponible
+    Question:
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+          example: titre
+        author:
+          type: string
+          example: user
+    Reponse:
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+          example: titre
+        author:
+          type: string
+          example: agent
+    GraphQLQuery:
+      required:
+      - query
+      type: object
+      properties:
+        query:
+          type: string
+        variables:
+          type: string
+    GraphQLResult:
+      type: object
+      properties:
+        data:
+          type: object
+  securitySchemes:
+    authenticate:
+      type: oauth2
+      description: GitLab OAuth2
+      flows:
+        authorizationCode:
+          authorizationUrl: "https://www-apps.univ-lehavre.fr/forge/oauth/authorize"
+          tokenUrl: https://www-apps.univ-lehavre.fr/forge/oauth/token
+          scopes:
+            read_user: Nom de l'utilisateur requis pour questions et réponses
+    jwt:  
+      type: apiKey  
+      in: header  
+      name: Authorization
+

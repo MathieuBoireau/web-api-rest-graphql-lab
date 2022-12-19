@@ -1,0 +1,88 @@
+{
+  "testAnnonces": [
+    {
+      "title": "annonce1",
+      "type": "Vente",
+      "publication_status": "publiée",
+      "status": "Vendu",
+      "description": "Une description...",
+      "price": "200000",
+      "date": "2022-10-04T00:00:00.000Z",
+      "photos": [],
+      "questions": [
+        {
+          "title": "L'intitulé d'une question",
+          "author": "User1",
+          "answer": {
+            "title": "La réponse",
+            "author": "Agent1"
+          }
+        }
+      ]
+    },
+    {
+      "title": "annonce2",
+      "type": "Location",
+      "publication_status": "publiée",
+      "status": "Loué",
+      "description": "Une autre description...",
+      "price": "10000",
+      "date": "2022-10-05T00:00:00.000Z",
+      "photos": [],
+      "questions": [
+        {
+          "title": "Un intitulé de question",
+          "author": "User2",
+          "answer": {
+            "title": "Une réponse",
+            "author": "Agent2"
+          }
+        },
+        {
+          "title": "Une autre question",
+          "author": "User1",
+          "answer": {
+            "title": "Une autre réponse",
+            "author": "Agent2"
+          }
+        }
+      ]
+    },
+    {
+      "title": "annonce3",
+      "type": "Vente",
+      "publication_status": "non publiée",
+      "status": "Disponible",
+      "description": "Encore une autre description",
+      "price": "150000",
+      "date": "2022-10-06T00:00:00.000Z",
+      "photos": [],
+      "questions": []
+    }
+  ],
+  "testInsertion": [
+    {
+      "title": "Nouvelle annonce",
+      "type": "Location",
+      "publication_status": "publiée",
+      "status": "louée",
+      "description": "Une description",
+      "price": 5000,
+      "date": "2022-11-16",
+      "photos": []
+    },
+    {
+      "title": "Nouveau titre d'annonce",
+      "type": "Location",
+      "publication_status": "publiée",
+      "status": "louée",
+      "description": "Une description",
+      "price": 5000,
+      "date": "2022-11-16",
+      "photos": []
+    }
+  ],
+  "testQuestion": {
+    "title": "Intitule de question"
+  }
+}

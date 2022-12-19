@@ -1,0 +1,55 @@
+type Query {
+	annonces: [Annonce]
+	annonce(id: ID!): Annonce
+}
+
+input AnnonceInput {
+	title: String!
+	type: String!
+	publication_status: String!
+	status: String!
+	description: String
+	price: Int!
+	date: Date!
+	photos: [Photo]
+}
+
+input QuestionReponseInput {
+	title: String!
+}
+
+type Mutation {
+	createAnnonce(input: AnnonceInput): Annonce
+	deleteAnnonce(annonceId: ID): Annonce
+	updateAnnonce(annonceId: ID, input: AnnonceInput): Annonce
+	createQuestion(annonceId: ID, input: QuestionReponseInput): Annonce
+	createReponse(annonceId: ID, n:Int input: QuestionReponseInput): Annonce
+}
+
+type Annonce {
+	_id: ID!
+	title: String!
+	type: String!
+	publication_status: String!
+	status: String!
+	description: String
+	price: Int!
+	date: Date!
+	photos: [Photo]
+	questions: [Question]
+}
+
+type Question {
+	questionId: ID!
+	title: String!
+	author: String!
+	answer: Reponse
+}
+
+type Reponse {
+	title: String!
+	author: String!
+}
+
+scalar Date
+scalar Photo

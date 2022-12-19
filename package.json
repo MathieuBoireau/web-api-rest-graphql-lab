@@ -1,0 +1,40 @@
+{
+  "name": "gestion-d-annonces-immobili-res",
+  "version": "1",
+  "description": "Web APIs / Web Services  TP2",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "dependencies": {
+    "@graphql-tools/schema": "^9.0.9",
+    "connect": "^3.2.0",
+    "express-graphql": "^0.12.0",
+    "express-jwt": "^7.7.7",
+    "graphql-tools": "^8.3.11",
+    "js-yaml": "^3.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.7.2",
+    "oas3-tools": "^2.2.3",
+    "passport": "^0.6.0",
+    "passport-gitlab2": "^5.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.1.2",
+    "mongodb-memory-server": "^8.10.0",
+    "supertest": "^6.3.1"
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "app.js",
+      "utils/writer.js"
+    ]
+  }
+}
